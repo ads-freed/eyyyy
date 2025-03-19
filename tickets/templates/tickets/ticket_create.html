@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Ticket</title>
+    <link rel="stylesheet" href="/static/css/light.css">
+</head>
+<body>
+    <h2>Create Ticket</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Ticket</button>
+    </form>
+    <a href="{% url 'tickets:ticket_list' %}">Back to Tickets</a>
+</body>
+</html>
