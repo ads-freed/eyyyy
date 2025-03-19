@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notification Logs</title>
+    <link rel="stylesheet" href="/static/css/light.css">
+</head>
+<body>
+    <h2>Notification Logs</h2>
+    <ul>
+        {% for log in logs %}
+            <li>{{ log.created_at }}: {{ log.message }}</li>
+        {% empty %}
+            <li>No notification logs.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
