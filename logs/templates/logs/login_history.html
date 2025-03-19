@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login History</title>
+    <link rel="stylesheet" href="/static/css/light.css">
+</head>
+<body>
+    <h2>Your Login History</h2>
+    <ul>
+        {% for log in logs %}
+            <li>{{ log.login_time }} from IP: {{ log.ip_address }}</li>
+        {% empty %}
+            <li>No login history available.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
