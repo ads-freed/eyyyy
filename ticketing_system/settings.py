@@ -77,9 +77,9 @@ ASGI_APPLICATION = 'ticketing_system.asgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  # Change to 'django.db.backends.mysql' for MySQL
-        'NAME': os.environ.get('DJANGO_DB_NAME', 'your_db_name'),
-        'USER': os.environ.get('DJANGO_DB_USER', 'your_db_user'),
-        'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD', 'your_db_password'),
+        'NAME': os.environ.get('DJANGO_DB_NAME', 'eyyyydb'),
+        'USER': os.environ.get('DJANGO_DB_USER', 'eyyyy'),
+        'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD', 'eyyyy'),
         'HOST': os.environ.get('DJANGO_DB_HOST', 'localhost'),
         'PORT': os.environ.get('DJANGO_DB_PORT', '5432'),
     }
