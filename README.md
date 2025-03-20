@@ -88,17 +88,73 @@ ticketing_system/
 #### 1.1. Update and Install Required Packages
 Open a terminal and update your package lists. Then install Python, pip, virtual environment tools, Git, and Nginx:
 ```bash
-sudo apt update
-sudo apt upgrade -y
-sudo apt install python3 python3-pip python3-venv git nginx -y
+sudo apt update && sudo apt upgrade -y
+sudo apt install python3 python3-pip python3-venv git nginx postgresql postgresql-contrib -y
 ```
+
+## PostgreSQL Setup
+#### 1.2.1. Start PostgreSQL
+Check that PostgreSQL is running:
+
+```bash
+
+sudo systemctl status postgresql
+````
+If it isn’t running, start it with:
+```bash
+
+sudo systemctl start postgresql
+```
+#### 1.2.2. Create a Dedicated Database Role (Non‑Superuser)
+Switch to the PostgreSQL User:
+
+```bash
+sudo -i -u postgres
+```
+Create a New Role `(when prompted, answer “n” for superuser)`:
+
+```bash
+createuser --interactive
+```
+- When prompted, enter the role name, e.g., eyyyy.
+- Answer n when asked if it should be a superuser.
+Create a New Database:
+
+```bash
+createdb eyyyydb
+```
+#### Set the Role’s Password:
+
+Enter the PostgreSQL shell:
+
+```bash
+psql
+```
+Then execute:
+
+````sql
+ALTER USER eyyyy WITH PASSWORD 'eyyyy_password';
+\q
+```
+Exit the postgres shell:
+
+```bash
+exit
+```
+
 
 ## 2. Application Setup
 #### 2.1. Clone Your Repository
 Clone your project repository into your desired directory:
 ```bash
-git clone https://github.com/ads-freed/eyyyy /var/www/eyyyy
-cd /var/www/eyyyy
+git clone https://github.com/ads-freed/ticketing_system /var/www/ticketing_system
+cd /var/www/ticketing_system
+
+sudo mkdir -p /var/www/ticketing_system
+sudo chown $USER:$USER /var/www/ticketing_system
+git clone https://your.git.repo/url.git /var/www/ticketing_system
+cd /var/www/ticketing_system
+
 ```
 
 #### 2.2. Create and Activate Virtual Environment
