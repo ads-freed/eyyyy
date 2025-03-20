@@ -12,7 +12,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your-production-secret-key')
 # --------------------
 DEBUG = False
 
-ALLOWED_HOSTS = ['your_domain.com', 'www.your_domain.com', 'server_IP']
+#ALLOWED_HOSTS = ['your_domain.com', 'www.your_domain.com', 'server_IP']
+ALLOWED_HOSTS = ['server_IP']
 
 # Application definition
 INSTALLED_APPS = [
