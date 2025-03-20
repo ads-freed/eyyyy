@@ -89,6 +89,8 @@ ticketing_system/
 Open a terminal and update your package lists. Then install Python, pip, virtual environment tools, Git, and Nginx:
 ```bash
 sudo apt update && sudo apt upgrade -y
+```
+```
 sudo apt install python3 python3-pip python3-venv git nginx postgresql postgresql-contrib -y
 ```
 
@@ -148,8 +150,14 @@ exit
 Clone your project repository into your desired directory:
 ```bash
 sudo mkdir -p /var/www/ticketing_system
+```
+```
 sudo chown $USER:$USER /var/www/ticketing_system
+```
+```
 git clone https://github.com/ads-freed/ticketing_system.git /var/www/ticketing_system
+```
+```
 cd /var/www/ticketing_system
 ```
 
@@ -157,6 +165,8 @@ cd /var/www/ticketing_system
 Set up a Python virtual environment:
 ```bash
 python3 -m venv venv
+```
+```
 source venv/bin/activate
 ```
 
@@ -177,7 +187,11 @@ pip install -r requirements.txt
 Run Django migrations and create an admin account:
 ```bash
 python manage.py makemigrations
+```
+```
 python manage.py migrate
+```
+```
 python manage.py createsuperuser
 ```
 
@@ -196,7 +210,8 @@ pip install gunicorn
 
 #### 4.2. Create a Systemd Service File for Gunicorn
 Create a Gunicorn systemd service file at `/etc/systemd/system/gunicorn.service`:(ini)
-
+``` nano /etc/systemd/system/gunicorn.service
+```
 ```
 [Unit]
 Description=gunicorn daemon for ticketing_system
@@ -223,17 +238,22 @@ Note:
 Reload systemd to register the new service, then start and enable it:
 ```bash
 sudo systemctl daemon-reload
+```
+```
 sudo systemctl start gunicorn
+```
+```
 sudo systemctl enable gunicorn
 ```
+
 Check the status to ensure it’s running:
 ```bash
 sudo systemctl status gunicorn
 ```
-If you see “Permission denied” errors for the socket file, ensure that /var/www/eyyyy is owned by or writable for the www-data user:
+If you see “Permission denied” errors for the socket file, ensure that /var/www/ticketing_system is owned by or writable for the www-data user:
 
 ```bash
-sudo chown -R www-data:www-data /var/www/eyyyy
+sudo chown -R www-data:www-data /var/www/ticketing_system
 ```
 ## 5. Nginx Configuration
 #### 5.1. Create an Nginx Site Configuration File
@@ -275,6 +295,8 @@ sudo ln -s /etc/nginx/sites-available/ticketing_system /etc/nginx/sites-enabled
 Test the configuration and reload Nginx:
 ```bash
 sudo nginx -t
+```
+```
 sudo systemctl restart nginx
 ```
 
@@ -283,6 +305,8 @@ sudo systemctl restart nginx
 If you’re using UFW, allow Nginx Full:
 ```bash
 sudo ufw allow 'Nginx Full'
+```
+```
 sudo ufw enable
 ```
 
@@ -290,6 +314,8 @@ sudo ufw enable
 SSL: Use Let’s Encrypt to secure your site with SSL. For example, install Certbot and run:
 ```bash
 sudo apt install certbot python3-certbot-nginx -y
+```
+```
 sudo certbot --nginx -d your_domain_or_IP
 ```
 
