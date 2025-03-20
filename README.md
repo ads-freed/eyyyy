@@ -1,5 +1,5 @@
 
-# ticketing_system/
+# eyyyy_system/
 
 an example of a complete Django‑based ticketing system
 
