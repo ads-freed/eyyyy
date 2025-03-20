@@ -113,14 +113,15 @@ Switch to the PostgreSQL User:
 ```bash
 sudo -i -u postgres
 ```
-Create a New Role `(when prompted, answer “n” for superuser)`:
+#### Create a New Role `(when prompted, answer “n” for superuser)`:
 
 ```bash
 createuser --interactive
 ```
 - When prompted, enter the role name, e.g., eyyyy.
 - Answer n when asked if it should be a superuser.
-Create a New Database:
+
+#### Create a New Database:
 
 ```bash
 createdb eyyyydb
@@ -210,7 +211,8 @@ pip install gunicorn
 
 #### 4.2. Create a Systemd Service File for Gunicorn
 Create a Gunicorn systemd service file at `/etc/systemd/system/gunicorn.service`:(ini)
-``` nano /etc/systemd/system/gunicorn.service
+```
+nano /etc/systemd/system/gunicorn.service
 ```
 ```
 [Unit]
