@@ -73,6 +73,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ticketing_system.wsgi.application'
 ASGI_APPLICATION = 'ticketing_system.asgi.application'
 
+# Use your custom user model
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
 # ----------------
 # Database Setup
 # ----------------
