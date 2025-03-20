@@ -132,7 +132,7 @@ psql
 ```
 Then execute:
 
-````sql
+```sql
 ALTER USER eyyyy WITH PASSWORD 'eyyyy_password';
 \q
 ```
@@ -147,14 +147,10 @@ exit
 #### 2.1. Clone Your Repository
 Clone your project repository into your desired directory:
 ```bash
-git clone https://github.com/ads-freed/ticketing_system /var/www/ticketing_system
-cd /var/www/ticketing_system
-
 sudo mkdir -p /var/www/ticketing_system
 sudo chown $USER:$USER /var/www/ticketing_system
-git clone https://your.git.repo/url.git /var/www/ticketing_system
+git clone https://github.com/ads-freed/ticketing_system.git /var/www/ticketing_system
 cd /var/www/ticketing_system
-
 ```
 
 #### 2.2. Create and Activate Virtual Environment
@@ -180,6 +176,7 @@ pip install -r requirements.txt
 #### 3.1. Apply Migrations and Create Superuser
 Run Django migrations and create an admin account:
 ```bash
+python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
 ```
@@ -202,17 +199,20 @@ Create a Gunicorn systemd service file at `/etc/systemd/system/gunicorn.service`
 
 ```
 [Unit]
-Description=gunicorn daemon for eyyyy
+Description=gunicorn daemon for ticketing_system
 After=network.target
 
 [Service]
 User=www-data
 Group=www-data
-WorkingDirectory=/var/www/eyyyy
-ExecStart=/var/www/eyyyy/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/var/www/eyyyy/gunicorn.sock ticketing_system.wsgi:application
+WorkingDirectory=/var/www/ticketing_system
+# UMask ensures the socket file is created with proper permissions.
+UMask=007
+ExecStart=/var/www/ticketing_system/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/var/www/ticketing_system/gunicorn.sock ticketing_system.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
+
 ```
 Note:
 - Adjust the `User` and `Group` if needed.
@@ -230,10 +230,18 @@ Check the status to ensure it’s running:
 ```bash
 sudo systemctl status gunicorn
 ```
+If you see “Permission denied” errors for the socket file, ensure that /var/www/eyyyy is owned by or writable for the www-data user:
 
+```bash
+sudo chown -R www-data:www-data /var/www/eyyyy
+```
 ## 5. Nginx Configuration
 #### 5.1. Create an Nginx Site Configuration File
-Create a new file (e.g., `/etc/nginx/sites-available/eyyyy`):
+Create `/etc/nginx/sites-available/ticketing_system` with the following content `(update your_domain_or_IP)`:
+```nano
+nano /etc/nginx/sites-available/ticketing_system
+```
+copy and insert this;
 ```nginx
 server {
     listen 80;
@@ -241,16 +249,16 @@ server {
 
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {
-        root /var/www/eyyyy;
+        root /var/www/ticketing_system;
     }
 
     location /media/ {
-        root /var/www/eyyyy;
+        root /var/www/ticketing_system;
     }
 
     location / {
         include proxy_params;
-        proxy_pass http://unix:/var/www/eyyyy/gunicorn.sock;
+        proxy_pass http://unix:/var/www/ticketing_system/gunicorn.sock;
     }
 }
 ```
@@ -259,7 +267,7 @@ Note: Replace `your_domain_or_IP` with your actual domain name or server IP.
 #### 5.2. Enable the Nginx Site
 Create a symbolic link to enable the site:
 ```bash
-sudo ln -s /etc/nginx/sites-available/eyyyy /etc/nginx/sites-enabled
+sudo ln -s /etc/nginx/sites-available/ticketing_system /etc/nginx/sites-enabled
 ```
 
 #### 5.3. Test and Reload Nginx
@@ -325,6 +333,43 @@ sudo tail -f /var/log/nginx/error.log
 Log in as an admin and perform test actions (ticket creation, chat messages, etc.) to verify all integrated features work correctly.
 
 
+```Final Steps and Verification
+Migrate and Create Superuser:
+
+bash
+Copy
+Edit
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py collectstatic
+Check Gunicorn and Nginx:
+
+Verify Gunicorn is running:
+
+bash
+Copy
+Edit
+sudo systemctl status gunicorn
+Verify Nginx is correctly proxying:
+
+bash
+Copy
+Edit
+sudo tail -f /var/log/nginx/error.log
+Access the Application:
+
+Visit your domain or server IP in a web browser to confirm the application is running properly.
+
+Review Logs:
+
+Use:
+
+bash
+Copy
+Edit
+sudo journalctl -u gunicorn --no-pager -n 50
+to check for any errors.
+```
 
 
 
