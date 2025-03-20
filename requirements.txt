@@ -4,3 +4,4 @@ django-crispy-forms
 pillow
 django-widget-tweaks
 channels
+psycopg2-binary
